@@ -11,11 +11,13 @@ import { useDispatch } from "react-redux";
 import invoiceSlice from "../redux/invoiceSlice";
 import { motion } from "framer-motion";
 
+import validator from "validator";
+
 const InvoiceEditForm = ({ setOpenCreateInvoice, invoice }) => {
   const dispatch = useDispatch();
 
   const [currency, setCurrency] = useState(invoice.currency);
-  const [currentDate, ] = useState(invoice.currentDate);
+  const [currentDate] = useState(invoice.currentDate);
   const [dateOfIssue, setDateOfIssue] = useState(invoice.dateOfIssue);
   const [billTo, setBillTo] = useState(invoice.billTo);
   const [billToEmail, setBillToEmail] = useState(invoice.billToEmail);
@@ -33,6 +35,9 @@ const InvoiceEditForm = ({ setOpenCreateInvoice, invoice }) => {
   const [discountRate, setDiscountRate] = useState(invoice.discountRate);
   const [discountAmount, setDiscountAmount] = useState(invoice.discountAmount);
   const [, setRefresh] = useState(false);
+  const [formChanged, setFormChanged] = useState(false);
+
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 
   const [items, setItems] = useState(
     invoice.items.map((item) => ({
@@ -48,6 +53,13 @@ const InvoiceEditForm = ({ setOpenCreateInvoice, invoice }) => {
     handleCalculateTotal();
   }, [items, taxRate, discountRate]);
 
+  useEffect(() => {
+    if (formChanged) {
+      setIsCheckboxChecked(false);
+      setFormChanged(false);
+    }
+  }, [formChanged]);
+
   const handleRowDel = (item) => {
     setItems((prevItems) => {
       const index = prevItems.indexOf(item);
@@ -56,8 +68,8 @@ const InvoiceEditForm = ({ setOpenCreateInvoice, invoice }) => {
       return newItems;
     });
 
-    // Use the callback form of setRefresh
     setRefresh((prevRefresh) => !prevRefresh);
+    setFormChanged(true);
   };
   const handleAddEvent = () => {
     const id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
@@ -68,14 +80,11 @@ const InvoiceEditForm = ({ setOpenCreateInvoice, invoice }) => {
       description: "",
       quantity: 1,
     };
-
-    // Use the callback form of setItems
     setItems((prevItems) => [...prevItems, newItem]);
 
-    // Use the callback form of setRefresh
     setRefresh((prevRefresh) => !prevRefresh);
 
-    console.log("Added: ", items);
+    setFormChanged(true);
   };
 
   const handleCalculateTotal = () => {
@@ -101,38 +110,40 @@ const InvoiceEditForm = ({ setOpenCreateInvoice, invoice }) => {
     ).toFixed(2);
 
     setTotal(calculatedTotal);
-
-    console.log("handleTotal: subTotal : ", newSubTotal);
-    console.log("handleTotal: tax : ", taxAmount);
-    console.log("handleTotal: total : ", calculatedTotal);
   };
   const saveItemHandler = async (event) => {
     event.preventDefault();
-    await dispatch(
-      invoiceSlice.actions.editInvoice({
-        currency,
-        currentDate,
-        dateOfIssue,
-        billTo,
-        invoiceNumber: invoice.invoiceNumber,
-        billToEmail,
-        billToAddress,
-        billFrom,
-        billFromEmail,
-        billFromAddress,
-        notes,
-        total,
-        subTotal,
-        taxRate,
-        taxAmount,
-        discountRate,
-        discountAmount,
-        items,
-      })
-    );
-    // Alert and close modal
-    alert("Invoice Saved");
-    setOpenCreateInvoice(false);
+    if (validator.isEmail(billToEmail) === false) {
+      alert("Please enter a valid email address for the bill to field");
+    } else if (validator.isEmail(billFromEmail) === false) {
+      alert("Please enter a valid email address for the bill from field");
+    } else {
+      await dispatch(
+        invoiceSlice.actions.editInvoice({
+          currency,
+          currentDate,
+          dateOfIssue,
+          billTo,
+          invoiceNumber: invoice.invoiceNumber,
+          billToEmail,
+          billToAddress,
+          billFrom,
+          billFromEmail,
+          billFromAddress,
+          notes,
+          total,
+          subTotal,
+          taxRate,
+          taxAmount,
+          discountRate,
+          discountAmount,
+          items,
+        })
+      );
+      // Alert and close modal
+      alert("Invoice Saved");
+      setOpenCreateInvoice(false);
+    }
   };
   const onItemizedItemEdit = (evt) => {
     const { id, name, value } = evt.target;
@@ -149,6 +160,8 @@ const InvoiceEditForm = ({ setOpenCreateInvoice, invoice }) => {
       return newItems;
     });
     handleCalculateTotal();
+
+    setFormChanged(true);
   };
   const editField = (event) => {
     const { name, value } = event.target;
@@ -191,11 +204,15 @@ const InvoiceEditForm = ({ setOpenCreateInvoice, invoice }) => {
     }
 
     handleCalculateTotal();
+
+    setFormChanged(true);
   };
 
   const onCurrencyChange = (event) => {
     setCurrency(event.target.value);
-    setRefresh((prevRefresh) => !prevRefresh); // Force re-render
+    setRefresh((prevRefresh) => !prevRefresh);
+
+    setFormChanged(true);
   };
 
   return (
@@ -206,14 +223,14 @@ const InvoiceEditForm = ({ setOpenCreateInvoice, invoice }) => {
         }
         setOpenCreateInvoice(false);
       }}
-      className="fixed top-0 bottom-0 left-0 right-0  dark:bg-black bg-[#141625] bg-opacity-50 z-40 flex justify-center items-center "
+      className="fixed top-0 bottom-0 left-0 right-0 dark:bg-black bg-[#141625] bg-opacity-50 z-40 flex justify-center items-center "
     >
       <motion.div
         key="createInvoice-sidebar"
-        initial={{ y: 700, opacity: 0 }} // Set initial y value to 700
+        initial={{ y: 700, opacity: 0 }}
         animate={{
           opacity: 1,
-          y: 0, // Animate y to 0 for entry
+          y: 0,
           transition: {
             type: "spring",
             stiffness: 300,
@@ -225,17 +242,9 @@ const InvoiceEditForm = ({ setOpenCreateInvoice, invoice }) => {
         className="fixed top-10 overflow-hidden flex flex-col dark:text-white dark:bg-[#141625] bg-white dark:border-2 border-white h-screen md:w-90 rounded-3xl"
         style={{ width: "80%" }}
       >
-        {/* <div className="absolute top-4 right-4 flex mb-4">
-        <button
-          onClick={() => setOpenCreateInvoice(false)}
-          className="text-red-500 hover:text-red-700 focus:outline-none"
-        >
-          <AiOutlineCloseCircle size={24} />
-        </button>
-      </div> */}
         <Form
           onSubmit={saveItemHandler}
-          className="overflow-y-scroll scrollbar-hide dark:bg-[#141625] pl-[15px] pr-[15px] pb-[15px] w-full  "
+          className="overflow-y-scroll scrollbar-hide dark:bg-[#141625] pl-[15px] pr-[15px] w-full  "
         >
           <Row>
             <Col md={8} lg={9}>
@@ -248,7 +257,7 @@ const InvoiceEditForm = ({ setOpenCreateInvoice, invoice }) => {
                           Current&nbsp;Date:&nbsp;
                         </span>
                         <span className="current-date">
-                          {new Date().toLocaleDateString('en-GB')}
+                          {new Date().toLocaleDateString("en-GB")}
                         </span>
                       </div>
                     </div>
@@ -276,7 +285,7 @@ const InvoiceEditForm = ({ setOpenCreateInvoice, invoice }) => {
                   <Col>
                     <Form.Label className="fw-bold">Bill to:</Form.Label>
                     <Form.Control
-                      placeholder="Who is this invoice to?"
+                      placeholder="Full Name"
                       rows={3}
                       value={billTo}
                       type="text"
@@ -310,7 +319,7 @@ const InvoiceEditForm = ({ setOpenCreateInvoice, invoice }) => {
                   <Col>
                     <Form.Label className="fw-bold">Bill from:</Form.Label>
                     <Form.Control
-                      placeholder="Who is this invoice from?"
+                      placeholder="Full Name"
                       rows={3}
                       value={billFrom}
                       type="text"
@@ -462,10 +471,30 @@ const InvoiceEditForm = ({ setOpenCreateInvoice, invoice }) => {
                     </InputGroup.Text>
                   </InputGroup>
                 </Form.Group>
+                {isCheckboxChecked ? (
+                  <h6 className="text-[#00000000] mt-3 mb-[-15px]"> . </h6>
+                ) : (
+                  <h6 className="text-danger mt-3 mb-[-15px]">* required</h6>
+                )}
+                <Form.Group className="my-3 w-full">
+                  <Form.Check
+                    type="checkbox"
+                    label="I have reviewed the details entered in this invoice, and everything appears to be accurate."
+                    checked={isCheckboxChecked}
+                    onChange={() => {
+                      setIsCheckboxChecked(!isCheckboxChecked);
+                      handleCalculateTotal();
+                    }}
+                    className="dark:text-white"
+                  />
+                </Form.Group>
                 <Button
                   variant="primary"
                   type="submit"
-                  className="d-block w-100 my-4"
+                  className={`d-block w-100 my-4 ${
+                    !isCheckboxChecked ? "bg-red" : ""
+                  }`}
+                  disabled={!isCheckboxChecked}
                 >
                   Save
                 </Button>

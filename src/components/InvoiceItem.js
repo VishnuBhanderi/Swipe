@@ -22,18 +22,19 @@ class InvoiceItem extends React.Component {
     });
     return (
       <div>
-        {this.props.items.length > 0 && (<table className="dark:bg-[#141625]">
-          <thead>
-            <tr>
-              <th className="dark:text-white">ITEM</th>
-              <th className="dark:text-white">QTY</th>
-              <th className="dark:text-white">PRICE/RATE</th>
-              <th className="dark:text-white">ACTION</th>
-            </tr>
-          </thead>
-          <tbody>{itemTable}</tbody>
-        </table>)}
-        
+        {this.props.items.length > 0 && (
+          <table className="dark:bg-[#141625]">
+            <thead>
+              <tr>
+                <th className="dark:text-white">ITEM</th>
+                <th className="dark:text-white">QTY</th>
+                <th className="dark:text-white">PRICE/RATE</th>
+                <th className="dark:text-white">ACTION</th>
+              </tr>
+            </thead>
+            <tbody>{itemTable}</tbody>
+          </table>
+        )}
 
         <div className="flex justify-center my-1">
           <Button className="fw-bold" onClick={this.props.onRowAdd}>

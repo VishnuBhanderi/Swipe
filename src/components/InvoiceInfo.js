@@ -4,16 +4,14 @@ import leftArrow from "../assets/icon-arrow-left.svg";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import invoiceSlice from "../redux/invoiceSlice";
+// import "bootstrap/dist/css/bootstrap.min.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import Table from "react-bootstrap/Table";
 import { BiPaperPlane, BiCloudDownload } from "react-icons/bi";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import emailjs from "emailjs-com";
-import pako from "pako";
-const dotenv = require("dotenv").config();
 function InvoiceInfo() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,25 +28,22 @@ function InvoiceInfo() {
     );
   }, [dispatch, invoiceNumber]);
 
-  // const onDeleteButtonClick = () => {
-  //   navigate("/");
-  //   setIsDeleteModalOpen(false);
-  //   onDelete(invoiceNumber);
-  // };
-
   const invoice = useSelector((state) => state.invoices.invoiceById);
   const invoices = useSelector((state) =>
     state.invoices.allInvoice.find(
       (invoice) => invoice.invoiceNumber === invoiceNumber
     )
   );
+  if (!invoices) {
+    return <div>Error: Invoice not found</div>;
+  }
   const formattedDate = invoice
     ? new Date(invoice.dateOfIssue).toLocaleDateString("en-GB")
     : "";
   const SendEmail = () => {
     const templateParams = {
       to_name: invoices.billTo,
-      to_email: invoices.billToEmail, // Replace with the recipient's email
+      to_email: invoices.billToEmail,
       from_name: invoices.billFrom,
       subject: `Invoice from ${invoices.billFrom} `,
       currency: invoices.currency,
@@ -61,21 +56,17 @@ function InvoiceInfo() {
       due_date: formattedDate,
     };
 
-    console.log("IDs ", serviceId, templateId, userId);
     emailjs
       .send(serviceId, templateId, templateParams, userId)
       .then((response) => {
-        console.log("Email sent successfully:", response);
         alert(`Email sent successfully to ${invoices.billToEmail}`);
       })
       .catch((error) => {
-        console.error("Error sending email:", error);
         alert("Error sending email");
       });
   };
 
   const GenerateInvoice = async () => {
-    console.log("generate invoice");
     await html2canvas(document.querySelector("#invoiceCapture")).then(
       (canvas) => {
         const imgData = canvas.toDataURL("image/png", 1.0);
@@ -93,45 +84,6 @@ function InvoiceInfo() {
       }
     );
   };
-  const SendInvoice = async () => {
-    console.log("send invoice");
-    await html2canvas(document.querySelector("#invoiceCapture")).then(
-      (canvas) => {
-        const imgData = canvas.toDataURL("image/png", 1.0);
-        const pdf = new jsPDF({
-          orientation: "portrait",
-          unit: "pt",
-          format: [612, 792],
-        });
-        pdf.internal.scaleFactor = 1;
-        const imgProps = pdf.getImageProperties(imgData);
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-
-        // Get data URL of the generated PDF
-        const pdfDataUrl = pdf.output("datauristring");
-        // Compress the PDF data URL using pako
-        const compressedPdfDataUrl = pako.deflate(pdfDataUrl, { to: "string" });
-        // Send the email with the PDF attachment
-
-        // Get the size in bytes
-        const sizeInBytes = new TextEncoder().encode(imgData).length;
-
-        // Convert bytes to kilobytes
-        const sizeInKB = sizeInBytes / 1024;
-
-        console.log("Compressed PDF size:", sizeInKB.toFixed(2), "KB");
-
-        SendEmail(compressedPdfDataUrl);
-      }
-    );
-  };
-  if (!invoices) {
-    return <div>Error: Invoice not found</div>;
-  }
-
-  console.log(invoice);
 
   return (
     <div className="pt-4">
@@ -176,7 +128,7 @@ function InvoiceInfo() {
                   </h5>
                 </div>
               </div>
-              <div className="p-4 dark:bg-[#141625] bg-[#f8f8fb] rounded-b-3xl  dark:text-white">
+              <div className="p-4 dark:bg-[#141625] bg-[#f8f8fb] duration-300 rounded-b-3xl  dark:text-white">
                 <Row className="mb-4">
                   <Col md={4}>
                     <div className="fw-bold">Billed to:</div>
@@ -295,7 +247,7 @@ function InvoiceInfo() {
                   <Button
                     variant="primary"
                     className="d-flex align-items-center justify-content-center my-2 w-100"
-                    onClick={SendInvoice}
+                    onClick={SendEmail}
                   >
                     <BiPaperPlane
                       style={{
@@ -305,7 +257,7 @@ function InvoiceInfo() {
                       }}
                       className="me-2"
                     />
-                    Send Invoice
+                    Send Invoice Mail
                   </Button>
                 </Col>
                 <Col md={6}>
@@ -332,22 +284,6 @@ function InvoiceInfo() {
       ) : (
         <>loading</>
       )}
-
-      {/* {isDeleteModalOpen && (
-        <DeleteModal
-          onDeleteButtonClick={onDeleteButtonClick}
-          setIsDeleteModalOpen={setIsDeleteModalOpen}
-          invoiceNumber={invoice.invoiceNumber}
-        />
-      )}
-      <AnimatePresence>
-        {isEditOpen ? (
-          <InvoiceEditForm
-            invoice={invoice}
-            setOpenCreateInvoice={setIsEditOpen}
-          />
-        ) : null}
-      </AnimatePresence> */}
     </div>
   );
 }
