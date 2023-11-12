@@ -15,13 +15,13 @@ Swipe is a versatile invoice generator designed to streamline the invoicing proc
 ![Dark Mode](/screenshots/DarkMode.png)
 
 *Light Mode: A clean and bright interface for daytime use.*
-![Light Mode](/screenshots/lightMode.png)
+![Light Mode](/screenshots/LightMode.png)
 
 *Add Invoice: Click the "+" button to create a new invoice.*
 ![Add Invoice](/screenshots/AddInvoice.png)
 
 *Edit Invoice: Use the "Edit Invoice" option to modify existing invoice details.*
-![Edit Invoice](/screenshots/editInvoice.png)
+![Edit Invoice](/screenshots/EditInvoice.png)
 
 *Invoice List: Easily manage and organize your invoices.*
 ![Invoice List](/screenshots/ListOfInvoice.png)
@@ -30,7 +30,7 @@ Swipe is a versatile invoice generator designed to streamline the invoicing proc
 ![View Invoice](/screenshots/viewInvoice.png)
 
 *Generate PDF: Quickly create a PDF version of any invoice for sharing and record-keeping.*
-![Generated PDF](/screenshots/PDF.png)
+![Generated PDF](/screenshots/Pdf.png)
 
 *Send Email: Seamlessly communicate with clients by sending invoices via email.*
 ![Send Email](/screenshots/Email.png)
