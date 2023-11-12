@@ -49,7 +49,7 @@ Swipe is a versatile invoice generator designed to streamline the invoicing proc
    ```
 
 3. **Configure Emailjs:**
-   - Obtain your [EmailJS](https://www.emailjs.com/)  credentials and update them in the configuration file.
+   - Obtain your [EmailJS](https://www.emailjs.com/)  credentials and update them in .env file at root directory the configuration file.
 
 4. **Run the Application:**
    ```bash
