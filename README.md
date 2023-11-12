@@ -2,6 +2,8 @@
 
 Swipe is a versatile invoice generator designed to streamline the invoicing process with a user-friendly interface. The application supports both Dark Mode and Light Mode, providing a personalized experience for users. Swipe allows you to manage your invoices efficiently, offering features such as viewing, editing, copying, and deleting invoices directly from the list. Additionally, users can generate PDFs of specific invoices and seamlessly send them via email using jspdf and Emailjs integration.
 
+[Live Demo](https://swipeinvoice.netlify.app/)
+
 ## Features
 
 - **Dark Mode and Light Mode**: Choose your preferred theme for a customized experience.
