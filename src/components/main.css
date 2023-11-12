@@ -36,19 +36,14 @@
   }
 }
 
-.invoice-info-card {
+/* .invoice-info-card {
     display: flex;
     width: 100%;
     align-items: center;
-  }
-
-  body {
-    background-color: black;
-  }
+  } */
 /* width */
 ::-webkit-scrollbar {
     display: none;
   }
-
 
 

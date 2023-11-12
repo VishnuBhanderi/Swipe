@@ -38,7 +38,7 @@ function Header() {
         <img
           src={logo}
           className="h-[80px] rounded-b-l-3xl absolute top-0 left-0"
-          alt="logo-image"
+          alt="logo"
           style={{
             width: "120px", // Adjust the width to your preference
             height: "auto", // Maintain aspect ratio
@@ -61,6 +61,7 @@ function Header() {
               animate={{ scale: 1, rotate: 360, transition }}
               whileTap={{ scale: 0.9, rotate: 15 }}
               src={moon}
+              alt="moon"
               className="cursor-pointer h-6"
             />
           ) : (
@@ -71,6 +72,7 @@ function Header() {
               initial={{ rotate: 45 }}
               animate={{ rotate: 360, transition }}
               src={sun}
+              alt="sun"
             />
           )}
 

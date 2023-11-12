@@ -33,11 +33,11 @@ function InvoiceInfo({ onDelete }) {
     );
   }, [invoiceNumber]);
 
-  const onDeleteButtonClick = () => {
-    navigate("/");
-    setIsDeleteModalOpen(false);
-    onDelete(invoiceNumber);
-  };
+  // const onDeleteButtonClick = () => {
+  //   navigate("/");
+  //   setIsDeleteModalOpen(false);
+  //   onDelete(invoiceNumber);
+  // };
 
   const invoice = useSelector((state) => state.invoices.invoiceById);
   const invoices = useSelector((state) =>
@@ -45,10 +45,9 @@ function InvoiceInfo({ onDelete }) {
       (invoice) => invoice.invoiceNumber === invoiceNumber
     )
   );
-
-  const formattedDate = new Date(invoice.dateOfIssue).toLocaleDateString(
-    "en-GB"
-  );
+  const formattedDate = invoice
+    ? new Date(invoice.dateOfIssue).toLocaleDateString("en-GB")
+    : "";
   const SendEmail = () => {
     const templateParams = {
       to_name: invoices.billTo,
@@ -333,7 +332,7 @@ function InvoiceInfo({ onDelete }) {
         <>loading</>
       )}
 
-      {isDeleteModalOpen && (
+      {/* {isDeleteModalOpen && (
         <DeleteModal
           onDeleteButtonClick={onDeleteButtonClick}
           setIsDeleteModalOpen={setIsDeleteModalOpen}
@@ -347,7 +346,7 @@ function InvoiceInfo({ onDelete }) {
             setOpenCreateInvoice={setIsEditOpen}
           />
         ) : null}
-      </AnimatePresence>
+      </AnimatePresence> */}
     </div>
   );
 }

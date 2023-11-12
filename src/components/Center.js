@@ -1,26 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion, useAnimation } from "framer-motion";
-import plus from "../assets/plus.png";
 import InvoiceCard from "./InvoiceCard";
 import { useDispatch, useSelector } from "react-redux";
 import InvoiceForm from "./InvoiceForm";
 import { useLocation } from "react-router-dom";
-import { IoMdAddCircle } from "react-icons/io";
-import { GrAddCircle } from "react-icons/gr";
 import { BiPlusMedical } from "react-icons/bi";
 
 function Center() {
   const location = useLocation();
   const controls = useAnimation();
-  const dispatch = useDispatch();
   const [isInvoiceFormOpen, setInvoiceFormOpen] = useState(false);
 
   const openInvoiceForm = () => {
     setInvoiceFormOpen(true);
-  };
-
-  const closeInvoiceForm = () => {
-    setInvoiceFormOpen(false);
   };
 
   const invoices = useSelector((state) => state.invoices.allInvoice);
@@ -36,10 +28,6 @@ function Center() {
       },
     });
   }, [controls]);
-
-  const transition = {
-    stiffness: 200,
-  };
 
   return (
     <div className="h-full dark:bg-[#141625] scrollbar-hide duration-300 min-h-screen bg-[#f8f8fb] py-[34px] px-2 md:px-8 lg:px-12 lg:py-[72px]  ">

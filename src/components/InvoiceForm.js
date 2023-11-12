@@ -9,14 +9,12 @@ import InvoiceItem from "./InvoiceItem";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useDispatch } from "react-redux";
 import invoiceSlice from "../redux/invoiceSlice";
-import { AiOutlineCloseCircle } from "react-icons/ai";
-import Modal from "react-modal";
 import { motion } from "framer-motion";
 
 const InvoiceForm = ({ setOpenCreateInvoice }) => {
   const dispatch = useDispatch();
   const [currency, setCurrency] = useState("$");
-  const [currentDate, setCurrentDate] = useState("");
+  const [currentDate,] = useState("");
   const [dateOfIssue, setDateOfIssue] = useState("");
   const [billTo, setBillTo] = useState("");
   const [billToEmail, setBillToEmail] = useState("");
@@ -31,7 +29,7 @@ const InvoiceForm = ({ setOpenCreateInvoice }) => {
   const [taxAmount, setTaxAmount] = useState("0.00");
   const [discountRate, setDiscountRate] = useState("");
   const [discountAmount, setDiscountAmount] = useState("0.00");
-  const [refresh, setRefresh] = useState(false);
+  const [, setRefresh] = useState(false);
 
   const [items, setItems] = useState([]);
 
@@ -39,9 +37,7 @@ const InvoiceForm = ({ setOpenCreateInvoice }) => {
     handleCalculateTotal();
   }, [items, taxRate, discountRate]);
 
-  const refreshPage = () => {
-    setRefresh(!refresh);
-  };
+ 
   const handleRowDel = (item) => {
     setItems((prevItems) => {
       const index = prevItems.indexOf(item);
@@ -220,8 +216,8 @@ const InvoiceForm = ({ setOpenCreateInvoice }) => {
           },
         }}
         exit={{ y: 700, transition: { duration: 0.2 } }}
-        className="fixed top-10 overflow-hidden flex flex-col dark:text-white dark:bg-[#141625] bg-white dark:border-2 border-white h-screen md:w-90 rounded-3xl"
         style={{ width: "80%" }}
+        className="fixed top-10 overflow-hidden flex flex-col dark:text-white dark:bg-[#141625] bg-white dark:border-2 border-white h-screen md:w-90 rounded-3xl"
       >
         {/* <h1 className="my-6 font-semibold dark:text-white dark:bg-[#141625] text-3xl">
           Create Invoice
@@ -254,7 +250,7 @@ const InvoiceForm = ({ setOpenCreateInvoice }) => {
                           Current&nbsp;Date:&nbsp;
                         </span>
                         <span className="current-date">
-                          {new Date().toLocaleDateString('en-GB')}
+                          {new Date().toLocaleDateString("en-GB")}
                         </span>
                       </div>
                     </div>
@@ -268,10 +264,9 @@ const InvoiceForm = ({ setOpenCreateInvoice }) => {
                         name="dateOfIssue"
                         className="my-2 dark:bg-[#141625] dark:text-white"
                         onChange={editField}
-                        style={{
-                          maxWidth: "150px",
-                        }}
+                   
                         required="required"
+                    
                       />
                     </div>
                   </div>
@@ -291,6 +286,8 @@ const InvoiceForm = ({ setOpenCreateInvoice }) => {
                       onChange={editField}
                       autoComplete="name"
                       required="required"
+                     
+                   
                     />
                     <Form.Control
                       placeholder="Email address"
@@ -301,6 +298,7 @@ const InvoiceForm = ({ setOpenCreateInvoice }) => {
                       onChange={editField}
                       autoComplete="email"
                       required="required"
+                   
                     />
                     <Form.Control
                       placeholder="Billing address"
@@ -311,6 +309,7 @@ const InvoiceForm = ({ setOpenCreateInvoice }) => {
                       autoComplete="address"
                       onChange={editField}
                       required="required"
+                  
                     />
                   </Col>
                   <Col>
@@ -325,6 +324,7 @@ const InvoiceForm = ({ setOpenCreateInvoice }) => {
                       onChange={editField}
                       autoComplete="name"
                       required="required"
+                  
                     />
                     <Form.Control
                       placeholder="Email address"
@@ -335,6 +335,7 @@ const InvoiceForm = ({ setOpenCreateInvoice }) => {
                       onChange={editField}
                       autoComplete="email"
                       required="required"
+                  
                     />
                     <Form.Control
                       placeholder="Billing address"
@@ -345,6 +346,7 @@ const InvoiceForm = ({ setOpenCreateInvoice }) => {
                       autoComplete="address"
                       onChange={editField}
                       required="required"
+                  
                     />
                   </Col>
                 </Row>

@@ -11,31 +11,28 @@ import DeleteModal from "./DeleteModal";
 
 const InvoiceCard = ({ invoice, index }) => {
   const navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useDispatch();
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [currency, setCurrency] = useState(invoice.currency);
-  const [currentDate, setCurrentDate] = useState(invoice.currentDate);
-  const [dateOfIssue, setDateOfIssue] = useState(invoice.dateOfIssue);
-  const [billTo, setBillTo] = useState(invoice.billTo);
-  const [billToEmail, setBillToEmail] = useState(invoice.billToEmail);
-  const [billToAddress, setBillToAddress] = useState(invoice.billToAddress);
-  const [billFrom, setBillFrom] = useState(invoice.billFrom);
-  const [billFromEmail, setBillFromEmail] = useState(invoice.billFromEmail);
-  const [billFromAddress, setBillFromAddress] = useState(
-    invoice.billFromAddress
-  );
-  const [notes, setNotes] = useState(invoice.notes);
-  const [total, setTotal] = useState(invoice.total);
-  const [subTotal, setSubTotal] = useState(invoice.subTotal);
-  const [taxRate, setTaxRate] = useState(invoice.taxRate);
-  const [taxAmount, setTaxAmount] = useState(parseFloat(invoice.taxAmount));
-  const [discountRate, setDiscountRate] = useState(invoice.discountRate);
-  const [discountAmount, setDiscountAmount] = useState(invoice.discountAmount);
+  const [currency] = useState(invoice.currency);
+  const [currentDate] = useState(invoice.currentDate);
+  const [dateOfIssue] = useState(invoice.dateOfIssue);
+  const [billTo] = useState(invoice.billTo);
+  const [billToEmail] = useState(invoice.billToEmail);
+  const [billToAddress] = useState(invoice.billToAddress);
+  const [billFrom] = useState(invoice.billFrom);
+  const [billFromEmail] = useState(invoice.billFromEmail);
+  const [billFromAddress] = useState(invoice.billFromAddress);
+  const [notes] = useState(invoice.notes);
+  const [total] = useState(invoice.total);
+  const [subTotal] = useState(invoice.subTotal);
+  const [taxRate] = useState(invoice.taxRate);
+  const [taxAmount] = useState(parseFloat(invoice.taxAmount));
+  const [discountRate] = useState(invoice.discountRate);
+  const [discountAmount] = useState(invoice.discountAmount);
 
-  const [items, setItems] = useState(
+  const [items] = useState(
     invoice.items.map((item) => ({
       id: item.id,
       name: item.name,
@@ -87,7 +84,9 @@ const InvoiceCard = ({ invoice, index }) => {
     navigate(`invoice?${invoice.invoiceNumber}`);
   };
 
-  const formattedDate = new Date(invoice.dateOfIssue).toLocaleDateString('en-GB');
+  const formattedDate = new Date(invoice.dateOfIssue).toLocaleDateString(
+    "en-GB"
+  );
 
   return (
     <>
@@ -101,7 +100,7 @@ const InvoiceCard = ({ invoice, index }) => {
             <h2 className="dark:text-white ">{index + 1}. </h2>
 
             <h2 className="text-sm text-gray-400 font-light ml-6">
-              Due :  {formattedDate}
+              Due : {formattedDate}
             </h2>
 
             <h2 className="text-sm text-gray-400 font-light ml-10">
@@ -117,7 +116,7 @@ const InvoiceCard = ({ invoice, index }) => {
                 />
               </div>
             </Link>
-           
+
             <div
               onClick={(e) => {
                 e.stopPropagation();
@@ -155,7 +154,7 @@ const InvoiceCard = ({ invoice, index }) => {
 
             <div className="flex flex-col">
               <h2 className="text-sm text-gray-400 font-light ">
-                Due :  {formattedDate}
+                Due : {formattedDate}
               </h2>
               <h1 className="text-xl dark:text-white">
                 {invoice.currency} {invoice.total}
