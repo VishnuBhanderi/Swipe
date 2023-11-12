@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import InvoiceCard from "./InvoiceCard";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import InvoiceForm from "./InvoiceForm";
 import { useLocation } from "react-router-dom";
 import { BiPlusMedical } from "react-icons/bi";
@@ -55,16 +55,13 @@ function Center() {
           <div className="flex items-center my-4 space-x-4">
             <button
               onClick={openInvoiceForm}
-              className="hover:opacity-80 flex items-center px-3 space-x-4 dark:border-2 border-[#7c5dfa] dark:bg-[#7c5dfa00] bg-[#7c5dfa] rounded-full"
+              className="hover:opacity-80 flex items-center px-2 space-x-4 dark:border-2 border-[#7c5dfa] dark:bg-[#7c5dfa00] bg-[#7c5dfa] rounded-full"
             >
               <BiPlusMedical
                 style={{ height: "33px", width: "33px", padding: "7.5px" }}
-                className="rounded-full text-white pt-2"
+                className="rounded-full text-white my-2"
                 size={100}
               />
-              <p className="mt-2 font-semibold text-white text-lg md:inline-block md:self-center">
-                New invoice
-              </p>
             </button>
           </div>
         </div>

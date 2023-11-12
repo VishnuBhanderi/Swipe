@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import leftArrow from "../assets/icon-arrow-left.svg";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import invoiceSlice from "../redux/invoiceSlice";
-import DeleteModal from "./DeleteModal";
-// import "bootstrap/dist/css/bootstrap.min.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
@@ -13,25 +11,24 @@ import Table from "react-bootstrap/Table";
 import { BiPaperPlane, BiCloudDownload } from "react-icons/bi";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import InvoiceEditForm from "./InvoiceEditForm";
 import emailjs from "emailjs-com";
 import pako from "pako";
-
-function InvoiceInfo({ onDelete }) {
+const dotenv = require("dotenv").config();
+function InvoiceInfo() {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isEditOpen, setIsEditOpen] = useState(false);
-
+  const serviceId = process.env.REACT_APP_EMAILJS_SERVICE_ID;
+  const templateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
+  const userId = process.env.REACT_APP_EMAILJS_USER_ID;
   const invoiceNumber = location.search.substring(1);
 
+  console.log("serviceId", serviceId);
   useEffect(() => {
     dispatch(
       invoiceSlice.actions.getInvoiceById({ invoiceNumber: invoiceNumber })
     );
-  }, [invoiceNumber]);
+  }, [dispatch, invoiceNumber]);
 
   // const onDeleteButtonClick = () => {
   //   navigate("/");
@@ -64,13 +61,9 @@ function InvoiceInfo({ onDelete }) {
       due_date: formattedDate,
     };
 
+    console.log("IDs ", serviceId, templateId, userId);
     emailjs
-      .send(
-        "service_6uqwaud",
-        "template_wfkomjs",
-        templateParams,
-        "ZXgCl3yXRTWCDDSic"
-      )
+      .send(serviceId, templateId, templateParams, userId)
       .then((response) => {
         console.log("Email sent successfully:", response);
         alert(`Email sent successfully to ${invoices.billToEmail}`);
@@ -136,7 +129,6 @@ function InvoiceInfo({ onDelete }) {
   };
   if (!invoices) {
     return <div>Error: Invoice not found</div>;
-    console.log(invoices);
   }
 
   console.log(invoice);
@@ -157,7 +149,7 @@ function InvoiceInfo({ onDelete }) {
               onClick={() => navigate(-1)}
               className=" flex items-center space-4 space-x-4  group  dark:text-white font-thin "
             >
-              <img className="mb-1" src={leftArrow} />
+              <img className="mb-1" src={leftArrow} alt="left-arrow" />
               <p className="mt-2 group-hover:opacity-80">Go back</p>
             </button>
           </div>
@@ -203,84 +195,93 @@ function InvoiceInfo({ onDelete }) {
                     <div>{formattedDate || ""}</div>
                   </Col>
                 </Row>
-                <Table className="mb-0 dark:text-white">
+                <table className="mb-0 dark:text-white">
                   <thead>
                     <tr>
-                      <th>QTY</th>
-                      <th>DESCRIPTION</th>
-                      <th className="text-end">PRICE</th>
-                      <th className="text-end">AMOUNT</th>
+                      <th className="px-2">QTY</th>
+                      <th className="px-2">DESCRIPTION</th>
+                      <th className="text-end px-2">PRICE</th>
+                      <th className="text-end px-2">AMOUNT</th>
                     </tr>
+                    <td
+                      colSpan="4"
+                      className="border-b dark:border-white border-gray-300"
+                    ></td>
                   </thead>
                   <tbody>
                     {invoices.items.map((item, i) => {
                       return (
                         <tr id={i} key={i}>
-                          <td style={{ width: "70px" }}>{item.quantity}</td>
-                          <td>
+                          <td style={{ width: "70px" }} className="px-2">
+                            {item.quantity}
+                          </td>
+                          <td className="w-full mx-1 px-2">
                             {item.name} - {item.description}
                           </td>
-                          <td className="text-end" style={{ width: "100px" }}>
+                          <td
+                            className="text-end px-2"
+                            style={{ width: "100px" }}
+                          >
                             {invoices.currency} {item.price}
                           </td>
-                          <td className="text-end" style={{ width: "100px" }}>
+                          <td
+                            className="text-end px-2"
+                            style={{ width: "100px" }}
+                          >
                             {invoices.currency} {item.price * item.quantity}
                           </td>
+                          <td
+                            colSpan="4"
+                            className="border-b dark:border-white border-gray-300"
+                          ></td>
                         </tr>
                       );
                     })}
                   </tbody>
-                </Table>
+                </table>
 
-                <Table className="dark:text-white">
+                <table class="font-sans dark:text-white border-collapse w-full text-gray-700">
                   <tbody>
-                    <tr>
-                      <td>&nbsp;</td>
-                      <td>&nbsp;</td>
-                      <td>&nbsp;</td>
+                    <tr class="h-20 border-b dark:border-white border-grey-700">
+                      <td class="w-1/3"></td>
+                      <td class="w-1/3"></td>
+                      <td class="w-1/3"></td>
                     </tr>
-                    <tr className="text-end">
+                    <tr class="text-right border-b dark:border-white border-grey-700">
                       <td></td>
-                      <td className="fw-bold" style={{ width: "100px" }}>
-                        SUBTOTAL
-                      </td>
-                      <td className="text-end" style={{ width: "100px" }}>
+                      <td class="font-bold w-32">SUBTOTAL</td>
+                      <td class="text-right w-32">
                         {invoices.currency} {invoices.subTotal}
                       </td>
                     </tr>
                     {invoices.taxAmount !== "0.00" && (
-                      <tr className="text-end">
+                      <tr class="text-right border-b dark:border-white border-grey-700">
                         <td></td>
-                        <td className="fw-bold" style={{ width: "100px" }}>
-                          TAX
-                        </td>
-                        <td className="text-end" style={{ width: "100px" }}>
+                        <td class="font-bold w-32">TAX</td>
+                        <td class="text-right w-32">
                           {invoices.currency} {invoices.taxAmount}
                         </td>
                       </tr>
                     )}
                     {invoices.discountAmount !== "0.00" && (
-                      <tr className="text-end">
+                      <tr class="text-right border-b dark:border-white border-grey-700">
                         <td></td>
-                        <td className="fw-bold" style={{ width: "100px" }}>
-                          DISCOUNT
-                        </td>
-                        <td className="text-end" style={{ width: "100px" }}>
+                        <td class="font-bold w-32">DISCOUNT</td>
+                        <td class="text-right w-32">
                           {invoices.currency} {invoices.discountAmount}
                         </td>
                       </tr>
                     )}
-                    <tr className="text-end">
+                    <tr class="text-right border-b dark:border-white border-grey-700">
                       <td></td>
-                      <td className="fw-bold" style={{ width: "100px" }}>
-                        TOTAL
-                      </td>
-                      <td className="text-end" style={{ width: "100px" }}>
+                      <td class="font-bold w-32">TOTAL</td>
+                      <td class="text-right w-32">
                         {invoices.currency} {invoices.total}
                       </td>
                     </tr>
                   </tbody>
-                </Table>
+                </table>
+
                 {invoices.notes && (
                   <div className="py-3 px-4 rounded">
                     Notes :- {invoices.notes}

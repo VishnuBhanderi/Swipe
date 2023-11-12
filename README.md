@@ -1,36 +1,65 @@
-# Invoice Generator - React App
-![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![](https://img.shields.io/badge/bootstrap-%23563D7C.svg?style=for-the-badge&logo=bootstrap&logoColor=white)
+# Swipe Invoice Generator
 
-An Invoice creator project built with React. Add itemized items, configure quantity, prices, tax rates and discounts. Download Invoice as PDFs to your device. Uses [jspdf-react](https://www.npmjs.com/package/jspdf-react) to capture the data from the modal and covert it from canvas -> pdf.
+Swipe is a versatile invoice generator designed to streamline the invoicing process with a user-friendly interface. The application supports both Dark Mode and Light Mode, providing a personalized experience for users. Swipe allows you to manage your invoices efficiently, offering features such as viewing, editing, copying, and deleting invoices directly from the list. Additionally, users can generate PDFs of specific invoices and seamlessly send them via email using jspdf and Emailjs integration.
 
-### Live Demo
-https://invoice-generator-react.netlify.app/
+## Features
 
-### Screenshots
-<img src="https://i.imgur.com/wRetnxk.png" style="max-width: 100px; width: 100%; height: auto;">
-<img src="https://i.imgur.com/AZChaei.png" style="max-width: 100px; width: 100%; height: auto;">
-<img src="https://i.imgur.com/Bz3K3DE.png" style="max-width: 100px; width: 100%; height: auto;">
+- **Dark Mode and Light Mode**: Choose your preferred theme for a customized experience.
+- **Invoice Management**: View, edit, copy, and delete invoices from a centralized list.
+- **PDF Generation**: Generate PDFs of invoices for easy sharing and record-keeping.
+- **Email Integration**: Send invoices via email using Emailjs, making communication with clients seamless.
 
-### Installation
+## Screenshots
 
-```
-git clone https://github.com/johnuberbacher/invoice-generator
+*Dark Mode: A sleek and professional look for night-time productivity.*
+![Dark Mode](/screenshots/DarkMode.png)
 
-npm install
+*Light Mode: A clean and bright interface for daytime use.*
+![Light Mode](/screenshots/lightMode.png)
 
-npm start / npm run build
-```
+*Add Invoice: Click the "+" button to create a new invoice.*
+![Add Invoice](/screenshots/AddInvoice.png)
 
-### To-Do
-- [x] Finish parsing data into Preview Modal
+*Edit Invoice: Use the "Edit Invoice" option to modify existing invoice details.*
+![Edit Invoice](/screenshots/editInvoice.png)
 
-- [x] Currency Picker
+*Invoice List: Easily manage and organize your invoices.*
+![Invoice List](/screenshots/ListOfInvoice.png)
 
-- [x] Calculate Tax and Discounts
+*View Invoice: Dive into the details of each invoice with options for editing and copying.*
+![View Invoice](/screenshots/viewInvoice.png)
 
-- [ ] Store invoices in Firebase DB
+*Generate PDF: Quickly create a PDF version of any invoice for sharing and record-keeping.*
+![Generated PDF](/screenshots/PDF.png)
 
+*Send Email: Seamlessly communicate with clients by sending invoices via email.*
+![Send Email](/screenshots/Email.png)
 
-### Meta
+## Installation and Setup
 
-Vishnu Bhanderi – [johnuberbacher.com](https://johnuberbacher.com)
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/VishnuBhanderi/Swipe.git
+   cd Swipe
+   ```
+
+2. **Install Dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Configure Emailjs:**
+   - Obtain your [EmailJS](https://www.emailjs.com/)  credentials and update them in the configuration file.
+
+4. **Run the Application:**
+   ```bash
+   npm start
+   ```
+
+## Contributors
+
+- [Vishnu Bhanderi](https://github.com/VishnuBhanderi)
+
+---
+
+Feel free to contribute and enhance the Swipe Invoice Generator. Happy invoicing!

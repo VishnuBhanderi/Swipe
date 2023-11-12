@@ -79,7 +79,11 @@ function Header() {
           <div className=" h-[80px] border-dotted border-l border-[#494e6e] mx-6"></div>
 
           <div className=" relative  ">
-            <img src={profile} className="h-[50px] rounded-full" />
+            <img
+              src={profile}
+              alt="profile"
+              className="h-[50px] rounded-full"
+            />
           </div>
         </div>
       </header>

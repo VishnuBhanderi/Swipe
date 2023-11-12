@@ -22,7 +22,7 @@ class InvoiceItem extends React.Component {
     });
     return (
       <div>
-        <table className="dark:bg-[#141625]">
+        {this.props.items.length > 0 && (<table className="dark:bg-[#141625]">
           <thead>
             <tr>
               <th className="dark:text-white">ITEM</th>
@@ -32,7 +32,8 @@ class InvoiceItem extends React.Component {
             </tr>
           </thead>
           <tbody>{itemTable}</tbody>
-        </table>
+        </table>)}
+        
 
         <div className="flex justify-center my-1">
           <Button className="fw-bold" onClick={this.props.onRowAdd}>

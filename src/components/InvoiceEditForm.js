@@ -15,7 +15,7 @@ const InvoiceEditForm = ({ setOpenCreateInvoice, invoice }) => {
   const dispatch = useDispatch();
 
   const [currency, setCurrency] = useState(invoice.currency);
-  const [currentDate, setCurrentDate] = useState(invoice.currentDate);
+  const [currentDate, ] = useState(invoice.currentDate);
   const [dateOfIssue, setDateOfIssue] = useState(invoice.dateOfIssue);
   const [billTo, setBillTo] = useState(invoice.billTo);
   const [billToEmail, setBillToEmail] = useState(invoice.billToEmail);
@@ -32,7 +32,7 @@ const InvoiceEditForm = ({ setOpenCreateInvoice, invoice }) => {
   const [taxAmount, setTaxAmount] = useState(parseFloat(invoice.taxAmount));
   const [discountRate, setDiscountRate] = useState(invoice.discountRate);
   const [discountAmount, setDiscountAmount] = useState(invoice.discountAmount);
-  const [refresh, setRefresh] = useState(false);
+  const [, setRefresh] = useState(false);
 
   const [items, setItems] = useState(
     invoice.items.map((item) => ({
