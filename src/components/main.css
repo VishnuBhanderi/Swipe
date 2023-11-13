@@ -36,14 +36,23 @@
   }
 }
 
-/* .invoice-info-card {
-    display: flex;
-    width: 100%;
-    align-items: center;
-  } */
 /* width */
 ::-webkit-scrollbar {
-    display: none;
-  }
+  display: none;
+}
 
+.form-control::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
 
+  color: rgb(107 114 128) !important;
+  opacity: 1; /* Firefox */
+}
+.form-control:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: rgb(107 114 128);
+}
+
+.form-control::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color:rgb(107 114 128);
+}
